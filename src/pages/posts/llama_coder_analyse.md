@@ -11,6 +11,18 @@ Llama Coder 仓库地址： https://github.com/nutlope/llamacoder
 
 <img src="/public/llama_coder_website.png" />
 
+**技术栈：**
+1. [Llama 3.1 405B](https://ai.meta.com/blog/meta-llama-3-1/)：Meta公司的Llama 3.1 405B大语言模型
+2. [Together AI](https://www.together.ai/?utm_source=example-app&utm_medium=llamacoder&utm_campaign=llamacoder-app-signup)：Together AI 平台用于大语言模型推理
+3. [Sandpack](https://sandpack.codesandbox.io/)：用于代码沙箱环境的 Sandpack 组件
+页面框架：Next.js + Tailwind CSS
+4. Helicone：用于可观察性监控
+5. Plausible：用于网站分析
+
+**缺点：**
+1. 生成的是单组件，没有 V0 这类平台生成多文件项目工程的能力
+2. 不支持在线部署
+
 # 一、提示词
 
 ## **prompts.ts**
@@ -1205,7 +1217,127 @@ startTransition(() => {
 ## createChat（方法）：
 
 ```javascript
-export async function createChat() {
+export async function createChat(
+  prompt: string,
+  model: string,
+  quality: "high" | "low",
+  screenshotUrl: string | undefined,
+) {
+  let options: ConstructorParameters<typeof Together>[0] = {};
+  if (process.env.HELICONE_API_KEY) {
+    options.baseURL = "https://together.helicone.ai/v1";
+    options.defaultHeaders = {
+      "Helicone-Auth": `Bearer ${process.env.HELICONE_API_KEY}`,
+      "Helicone-Property-appname": "LlamaCoder",
+    };
+  }
+ 
+  const together = new Together(options);
+ 
+  async function fetchTitle() {
+    const responseForChatTitle = await together.chat.completions.create({
+      model: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a chatbot helping the user create a simple app or script, and your current job is to create a succinct title, maximum 3-5 words, for the chat given their initial prompt. Please return only the title.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    });
+    const title = responseForChatTitle.choices[0].message?.content || prompt;
+    return title;
+  }
+ 
+  async function fetchTopExample() {
+    const findSimilarExamples = await together.chat.completions.create({
+      model: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+      messages: [
+        {
+          role: "system",
+          content: `You are a helpful bot. Given a request for building an app, you match it to the most similar example provided. If the request is NOT similar to any of the provided examples, return "none". Here is the list of examples, ONLY reply with one of them OR "none":
+ 
+          - landing page
+          - blog app
+          - quiz app
+          - pomodoro timer
+          `,
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    });
+ 
+    const mostSimilarExample =
+      findSimilarExamples.choices[0].message?.content || "none";
+    return mostSimilarExample;
+  }
+ 
+  const [title, mostSimilarExample] = await Promise.all([
+    fetchTitle(),
+    fetchTopExample(),
+  ]);
+ 
+  let fullScreenshotDescription;
+  if (screenshotUrl) {
+    const screenshotResponse = await together.chat.completions.create({
+      model: "meta-llama/Llama-3.2-90B-Vision-Instruct-Turbo",
+      temperature: 0.2,
+      max_tokens: 1000,
+      messages: [
+        {
+          role: "user",
+          // @ts-expect-error Need to fix the TypeScript library type
+          content: [
+            { type: "text", text: screenshotToCodePrompt },
+            {
+              type: "image_url",
+              image_url: {
+                url: screenshotUrl,
+              },
+            },
+          ],
+        },
+      ],
+    });
+ 
+    fullScreenshotDescription = screenshotResponse.choices[0].message?.content;
+  }
+ 
+  let userMessage: string;
+  if (quality === "high") {
+    let initialRes = await together.chat.completions.create({
+      model: "Qwen/Qwen2.5-Coder-32B-Instruct",
+      messages: [
+        {
+          role: "system",
+          content: softwareArchitectPrompt,
+        },
+        {
+          role: "user",
+          content: fullScreenshotDescription
+            ? fullScreenshotDescription + prompt
+            : prompt,
+        },
+      ],
+      temperature: 0.2,
+      max_tokens: 3000,
+    });
+ 
+    userMessage = initialRes.choices[0].message?.content ?? prompt;
+  } else {
+    userMessage =
+      prompt +
+      "RECREATE THIS APP AS CLOSELY AS POSSIBLE: " +
+      fullScreenshotDescription;
+  }
+ 
   const chat = await prisma.chat.create({
     data: {
       model,
@@ -1229,8 +1361,88 @@ export async function createChat() {
     include: {
       messages: true,
     },
-  });  return {
+  });
+ 
+  const lastMessage = chat.messages
+    .sort((a, b) => a.position - b.position)
+    .at(-1);
+  if (!lastMessage) throw new Error("No new message");
+ 
+  return {
     chatId: chat.id,
-  }
+    lastMessageId: lastMessage.id,
+  };
 }
 ```
+
+代码分析：  
+
+1. 创建 `together-ai` 实例：设置了 `baseURL` 和 `defaultHeaders` 参数， `defaultHeaders` 中包含 `Helicone-Auth` 和 `Helicone-Property-appname`。Together AI：https://www.together.ai/；
+2. 获取标题 `fetchTitle`：使用 `meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo` 模型将用户的输入总结为一个标题，提示词：“你是一个帮助用户创建简单应用或脚本的聊天机器人，你当前的任务是根据用户的初始提示为对话创建一个简洁的标题，最多 3-5 个词。请只返回标题。”；
+3. 获取与用户输入最相似的示例 `fetchTopExample`：使用 `meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo`，提示词："你是一个乐于助人的机器人。当收到构建应用的请求时，你需要将其匹配到最相似的示例。如果该请求与提供的任何示例都不相似，则返回 "none"。以下是示例列表，只能回复其中之一或 "none"： landing page、blog app、quiz app、pomodoro timer"。这个方法的返回结果会作为 `prompt.ts` 中 `getMainCodingPrompt` 方法的入参，匹配到相关示例作为 prompt 中的补充示例；
+4. 如果用户上传了截图 `screenshotUrl`，获取对截图中进行页面要素分析的结果：调用 `meta-llama/Llama-3.2-90B-Vision-Instruct-Turbo` 模型，将 `prompt.ts` 中 `screenshotToCodePrompt` 作为 prompt 输入，返回的结果赋值给 `fullScreenshotDescription` 变量；
+5. 如果用户选择了高质量回复，使用 `Qwen/Qwen2.5-Coder-32B-Instruct` 模型结合 `softwareArchitectPrompt` 及用户和截图描述生成完整的页面生成计划描述，将此作为处理后的用户输入；如果选择低质量回复，则处理后的用户输入为： prompt + "尽可能精确地重新创建这个应用" + `fullScreenshotDescription`；
+6. 将相关信息使用 prisma 保存到相关表（Chat、Message - Chat 和 Message 是一对多的关系）中，其中 content 为 `getMainCodingPrompt`(mostSimilarExample) 的结果；
+7. 返回 `chatId` 和 `lastMessageId`  
+  
+`createChat` 这个方法主要是对用户输入进行了精细化的处理，得到了信息更完善的输入。
+
+## getNextCompletionStreamPromise（方法）：
+
+```javascript
+export async function getNextCompletionStreamPromise(
+  messageId: string,
+  model: string,
+) {
+  const message = await prisma.message.findUnique({ where: { id: messageId } });
+  if (!message) notFound();
+ 
+  const messagesRes = await prisma.message.findMany({
+    where: { chatId: message.chatId, position: { lte: message.position } },
+    orderBy: { position: "asc" },
+  });
+ 
+  const messages = z
+    .array(
+      z.object({
+        role: z.enum(["system", "user", "assistant"]),
+        content: z.string(),
+      }),
+    )
+    .parse(messagesRes);
+ 
+  let options: ConstructorParameters<typeof Together>[0] = {};
+  if (process.env.HELICONE_API_KEY) {
+    options.baseURL = "https://together.helicone.ai/v1";
+    options.defaultHeaders = {
+      "Helicone-Auth": `Bearer ${process.env.HELICONE_API_KEY}`,
+      "Helicone-Property-appname": "LlamaCoder",
+      "Helicone-Property-chatId": message.chatId,
+    };
+  }
+ 
+  const together = new Together(options);
+ 
+  return {
+    streamPromise: new Promise<ReadableStream>(async (resolve) => {
+      const res = await together.chat.completions.create({
+        model,
+        messages: messages.map((m) => ({ role: m.role, content: m.content })),
+        stream: true,
+        temperature: 0.2,
+        max_tokens: 9000,
+      });
+ 
+      resolve(res.toReadableStream());
+    }),
+  };
+}
+```
+
+代码分析：  
+
+1. 根据 `lastMessageId` 查找最新一条消息记录（这条就是刚创建的）；
+2. 根据这条消息记录绑定的 `chatId`，获取这个 `messageId` 之前的所有消息（包含当前消息），按 `position` 升序排列；
+3. 使用 `Zod` 库进行数据验证：必须包含 role（只能是 system，user, assistant 之一）；必须包含 content（必须是字符串类型）；
+4. 创建 `together-ai` 实例：设置了 `baseURL` 和 `defaultHeaders` 参数， `defaultHeaders` 包含 `Helicone-Auth`` 、 `Helicone-Property-appName` 、 `Helicone-Property-chatId`；
+5. 返回对象，key 为 `streamPromise`，一个流式的 Promise 实例，其中 `messages` 参数是将前一步获取的所有消息组装成了一个数组
