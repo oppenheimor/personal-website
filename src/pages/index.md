@@ -24,7 +24,7 @@ I graduated from [Nanjing University of Posts and Telecommunications](https://ba
 
 My main tech stack is `javascript` and `vue`, and now gradually migrating to `TypeScript`. My work is currently focusing on `lowcode platform`、`UI component library` and `business material market` construction. I also love writing some gadgets, like `vscode extension`、`npm packages` and some other libraries. I dream of being a great technologist.
 
-Outside of programming, I enjoy playing pingpong, singing and reading usually, and I recently fell in love with listening to podcast while driving. I will write some experience sharing in my blog after.
+Outside of programming, I enjoy playing pingpong, guita, singing and reading usually, and I recently fell in love with listening to podcast while driving. I will write some experience sharing in my blog after.
 
 My life motto is: &nbsp;Better go home and weave a net than to stand by the pond longing for fish. Translated in Chinese is "临渊羡鱼，不如退而结网". <br/>
 Focus on what we love and keep doing , we will eventually find the meaning of life.
