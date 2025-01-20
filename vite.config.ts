@@ -19,6 +19,7 @@ import matter from 'gray-matter'
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left'
 
 export default defineConfig({
+  base: '/',
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
