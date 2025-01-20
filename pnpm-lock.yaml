@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@vercel/analytics':
+        specifier: ^1.4.1
+        version: 1.4.1(vue-router@4.0.14(vue@3.2.31))(vue@3.2.31)
       '@vercel/speed-insights':
         specifier: ^1.1.0
         version: 1.1.0(vue-router@4.0.14(vue@3.2.31))(vue@3.2.31)
@@ -1071,6 +1074,32 @@ packages:
 
   '@unocss/vite@0.27.6':
     resolution: {integrity: sha512-RBLlvFGfKf2xprTh0u/l448Eg88FXbpq23psPS1ZmKHUYRWm+SIraH6E/BG6sFIEljdvO5F/jhNvuMpAKl5PKg==}
+
+  '@vercel/analytics@1.4.1':
+    resolution: {integrity: sha512-ekpL4ReX2TH3LnrRZTUKjHHNpNy9S1I7QmS+g/RQXoSUQ8ienzosuX7T9djZ/s8zPhBx1mpHP/Rw5875N+zQIQ==}
+    peerDependencies:
+      '@remix-run/react': ^2
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@remix-run/react':
+        optional: true
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   '@vercel/speed-insights@1.1.0':
     resolution: {integrity: sha512-rAXxuhhO4mlRGC9noa5F7HLMtGg8YF1zAN6Pjd1Ny4pII4cerhtwSG4vympbCl+pWkH7nBS9kVXRD4FAn54dlg==}
@@ -2757,9 +2786,6 @@ packages:
 
   jsonc-parser@2.3.1:
     resolution: {integrity: sha512-H8jvkz1O50L3dMZCsLqiuB2tA7muqbSg1AtGEkN0leAqGjsUzDJir3Zwr02BhqdcITPg3ei3mZ+HjMocAknhhg==}
-
-  jsonc-parser@3.0.0:
-    resolution: {integrity: sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==}
 
   jsonc-parser@3.2.0:
     resolution: {integrity: sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w==}
@@ -5614,6 +5640,11 @@ snapshots:
       - sass
       - stylus
 
+  '@vercel/analytics@1.4.1(vue-router@4.0.14(vue@3.2.31))(vue@3.2.31)':
+    optionalDependencies:
+      vue: 3.2.31
+      vue-router: 4.0.14(vue@3.2.31)
+
   '@vercel/speed-insights@1.1.0(vue-router@4.0.14(vue@3.2.31))(vue@3.2.31)':
     optionalDependencies:
       vue: 3.2.31
@@ -7450,7 +7481,7 @@ snapshots:
   jsdom@19.0.0:
     dependencies:
       abab: 2.0.5
-      acorn: 8.7.0
+      acorn: 8.11.2
       acorn-globals: 6.0.0
       cssom: 0.5.0
       cssstyle: 2.3.0
@@ -7521,8 +7552,6 @@ snapshots:
       semver: 7.3.5
 
   jsonc-parser@2.3.1: {}
-
-  jsonc-parser@3.0.0: {}
 
   jsonc-parser@3.2.0: {}
 
@@ -8917,7 +8946,7 @@ snapshots:
 
   vscode-json-languageservice@4.1.10:
     dependencies:
-      jsonc-parser: 3.0.0
+      jsonc-parser: 3.2.0
       vscode-languageserver-textdocument: 1.0.3
       vscode-languageserver-types: 3.16.0
       vscode-nls: 5.0.0
