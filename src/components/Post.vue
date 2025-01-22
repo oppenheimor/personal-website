@@ -10,17 +10,6 @@ defineProps({
   },
 })
 const route = useRoute()
-
-onMounted(() => {
-  if (route.path.includes('/posts')) {
-    document.body.classList.remove('font-sans')
-    document.body.classList.add('font-mono')
-  }
-  else {
-    document.body.classList.remove('font-mono')
-    document.body.classList.add('font-sans')
-  }
-})
 </script>
 
 <template>

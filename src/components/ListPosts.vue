@@ -7,13 +7,13 @@
     </template>
     <router-link
       v-for="route in posts" :key="route.path"
-      class="item block font-normal mb-6 mt-2 no-underline"
+      class="item block font-normal mb-6 mt-2"
       :to="route.path"
     >
-      <li class="no-underline list-none">
-        <div class="title text-lg" flex items-center>
+      <li>
+        <div class="title text-lg relative" flex items-center>
           <div class="i-ri-article-fill" mr-1 />
-          {{ route.title }}
+          <span>{{ route.title }}</span>
           <!-- <sup
             v-if="route.lang === 'zh'"
             class="text-xs border border-current rounded px-1 pb-0.2"

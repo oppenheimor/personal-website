@@ -2,7 +2,7 @@ import {
   defineConfig,
   presetAttributify,
   presetIcons,
-  presetTypography,
+  // presetTypography,
   presetUno,
   presetWebFonts,
   transformerDirectives,
@@ -21,7 +21,7 @@ export default defineConfig({
       scale: 1.2,
       warn: true,
     }),
-    presetTypography(),
+    // presetTypography(),
     presetWebFonts({
       fonts: {
         sans: 'DM Sans',
