@@ -16,7 +16,7 @@ display: ''
   </router-link>
 </ClientOnly>
 
-# Hellosssssssssssssssss(*´▽｀)ノ.  Welcome to my blog.
+# Hello(*´▽｀)ノ.  Welcome to my blog.
 
 My name is **Jiaqi Shen**. Living and working now in [Hangzhou, China](https://baike.baidu.com/item/%E6%9D%AD%E5%B7%9E/147639).
 
