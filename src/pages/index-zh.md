@@ -18,7 +18,7 @@ display: ''
 
 # 您好(*´▽｀)ノ.  欢迎光临我的部落格。
 
-我叫&nbsp;**沈佳棋**。现居&nbsp;[中国杭州](https://baike.baidu.com/item/%E6%9D%AD%E5%B7%9E/147639)。
+我叫&nbsp;**沈佳棋**。出生于 **1998** 年。现居&nbsp;[中国杭州](https://baike.baidu.com/item/%E6%9D%AD%E5%B7%9E/147639)。
 
 我在 2020 年本科毕业于&nbsp;[南京邮电大学](https://baike.baidu.com/item/%E5%8D%97%E4%BA%AC%E9%82%AE%E7%94%B5%E5%A4%A7%E5%AD%A6/1004526)，目前在一家上市互联网金融公司&nbsp;[同花顺](https://baike.baidu.com/item/%E6%B5%99%E6%B1%9F%E6%A0%B8%E6%96%B0%E5%90%8C%E8%8A%B1%E9%A1%BA%E7%BD%91%E7%BB%9C%E4%BF%A1%E6%81%AF%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/6782222)&nbsp;任职前端开发工程师。
 
