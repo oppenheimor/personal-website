@@ -6,9 +6,9 @@
 // import { Analytics } from '@vercel/analytics/nuxt'
 
 useHead({
-  title: "Vitesse",
-  meta: [{ name: "description", content: "Opinionated Vite Starter Template" }],
-});
+  title: 'Vitesse',
+  meta: [{ name: 'description', content: 'Opinionated Vite Starter Template' }],
+})
 </script>
 
 <template>

@@ -8,6 +8,7 @@ declare module 'vue' {
     EnhanceTag: typeof import('./components/EnhanceTag.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     ListPosts: typeof import('./components/ListPosts.vue')['default']
+    MediumZoomProvider: typeof import('./components/MediumZoomProvider.vue')['default']
     NavBar: typeof import('./components/NavBar.vue')['default']
     Post: typeof import('./components/Post.vue')['default']
     README: typeof import('./components/README.md')['default']

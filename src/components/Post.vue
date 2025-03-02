@@ -25,7 +25,9 @@ const route = useRoute()
     </p>
   </div>
   <article class="content">
-    <slot />
+    <MediumZoomProvider>
+      <slot />
+    </MediumZoomProvider>
   </article>
   <div v-if="route.path !== '/'" class="prose m-auto mt-8 mb-8 text-left">
     <router-link

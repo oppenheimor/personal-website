@@ -26,6 +26,9 @@ importers:
       install:
         specifier: ^0.13.0
         version: 0.13.0
+      medium-zoom:
+        specifier: ^1.1.0
+        version: 1.1.0
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -2936,6 +2939,9 @@ packages:
   media-typer@0.3.0:
     resolution: {integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=}
     engines: {node: '>= 0.6'}
+
+  medium-zoom@1.1.0:
+    resolution: {integrity: sha512-ewyDsp7k4InCUp3jRmwHBRFGyjBimKps/AJLjRSox+2q/2H4p/PNpQf+pwONWlJiOudkBXtbdmVbFjqyybfTmQ==}
 
   merge-descriptors@1.0.1:
     resolution: {integrity: sha1-sAqqVW3YtEVoFQ7J0blT8/kMu2E=}
@@ -7711,6 +7717,8 @@ snapshots:
   mdurl@1.0.1: {}
 
   media-typer@0.3.0: {}
+
+  medium-zoom@1.1.0: {}
 
   merge-descriptors@1.0.1: {}
 
