@@ -18,6 +18,12 @@ html {
   overflow: scroll;
 }
 
+// 页面整体将只允许上下左右滚动，禁止双指缩放
+html, body {
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
 #nprogress {
   pointer-events: none;
 }
