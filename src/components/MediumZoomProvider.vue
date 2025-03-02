@@ -13,13 +13,13 @@ onMounted(() => {
 
   // 添加打开和关闭事件监听器
   // 当 zoom 打开时，禁用页面滚动
-  zoom.on('open', () => {
-    document.body.style.overflow = 'hidden'
-  })
+  // zoom.on('open', () => {
+  //   document.body.style.overflow = 'hidden'
+  // })
 
-  zoom.on('close', () => {
-    document.body.style.overflow = ''
-  })
+  // zoom.on('close', () => {
+  //   document.body.style.overflow = ''
+  // })
 })
 
 onBeforeUnmount(() => {
