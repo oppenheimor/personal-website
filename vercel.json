@@ -1,42 +1,12 @@
 {
-  "redirects": [
+  "rewrites": [
+    {
+      "source": "/ai-prompt-card/:path*",
+      "destination": "https://random-prompt-card-3sst.vercel.app/:path*"
+    },
     {
       "source": "/ai-prompt-card",
-      "destination": "https://random-prompt-card-3sst.vercel.app/",
-      "permanent": false
-    },
-    {
-      "source": "/ai-prompt-card/(.*)",
-      "destination": "https://random-prompt-card-3sst.vercel.app/$1",
-      "permanent": false
-    }
-  ],
-  "headers": [
-    {
-      "source": "/index.html",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400"
-        }
-      ]
+      "destination": "https://random-prompt-card-3sst.vercel.app/"
     }
   ],
   "trailingSlash": false
