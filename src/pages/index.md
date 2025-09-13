@@ -29,6 +29,8 @@ Outside of programming, I enjoy playing pingpong, guita, singing and reading usu
 My life motto is: &nbsp;Better go home and weave a net than to stand by the pond longing for fish. Translated in Chinese is "临渊羡鱼，不如退而结网". <br/>
 Focus on what we love and keep doing , we will eventually find the meaning of life.
 
+**You can jump to my blog list [here](/posts).**。
+
 ***
 You can Call me at <code>15251852316</code>. My wechat id is the same as mobile phone number.<br>
 You can find me on [GitHub](https://github.com/oppenheimor) <br>
