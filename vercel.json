@@ -7,6 +7,10 @@
     {
       "source": "/ai-prompt-card",
       "destination": "https://random-prompt-card-3sst.vercel.app/"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
     }
   ],
   "headers": [
