@@ -1,18 +1,16 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "/ai-prompt-card$",
-      "status": 302,
-      "headers": { "Location": "https://random-prompt-card-3sst.vercel.app/" }
+      "source": "/ai-prompt-card",
+      "destination": "https://random-prompt-card-3sst.vercel.app/"
     },
     {
-      "src": "/ai-prompt-card/(.*)",
-      "status": 302,
-      "headers": { "Location": "https://random-prompt-card-3sst.vercel.app/$1" }
+      "source": "/ai-prompt-card/(.*)",
+      "destination": "https://random-prompt-card-3sst.vercel.app/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
