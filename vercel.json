@@ -7,10 +7,6 @@
     {
       "src": "/ai-prompt-card/(.*)",
       "dest": "https://random-prompt-card-3sst.vercel.app/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/"
     }
   ]
 }
