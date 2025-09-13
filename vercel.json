@@ -1,15 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/ai-prompt-card",
-      "destination": "https://random-prompt-card-3sst.vercel.app/"
-    },
-    {
-      "source": "/ai-prompt-card/(.*)",
-      "destination": "https://random-prompt-card-3sst.vercel.app/$1"
-    },
-    {
-      "source": "/(.*)",
+      "source": "/test-rewrite",
       "destination": "/index.html"
     }
   ]
