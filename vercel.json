@@ -2,17 +2,19 @@
   "redirects": [
     {
       "source": "/ai-prompt-card",
-      "destination": "https://random-prompt-card-3sst.vercel.app/"
+      "destination": "https://random-prompt-card-3sst.vercel.app/",
+      "permanent": false
     },
     {
       "source": "/ai-prompt-card/(.*)",
-      "destination": "https://random-prompt-card-3sst.vercel.app/$1"
+      "destination": "https://random-prompt-card-3sst.vercel.app/$1",
+      "permanent": false
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/"
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
