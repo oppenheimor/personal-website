@@ -39,12 +39,8 @@ author: 沈佳棋
 {
   "rewrites": [
     {
-      "source": "/ai-prompt-card",
+      "source": "/ai-prompt-card/(.*)",
       "destination": "https://random-prompt-card-3sst.vercel.app/"
-    },
-    {
-      "source": "/ai-prompt-card/:path*",
-      "destination": "https://random-prompt-card-3sst.vercel.app/:path*"
     },
     {
       "source": "/(.*)",
