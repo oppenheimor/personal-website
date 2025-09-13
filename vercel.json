@@ -1,12 +1,15 @@
 {
-  "routes": [
+  "redirects": [
     {
-      "src": "/test-rewrite2",
-      "dest": "/index.html"
+      "source": "/ai-prompt-card",
+      "destination": "https://random-prompt-card-3sst.vercel.app/",
+      "permanent": false
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/ai-prompt-card/(.*)",
+      "destination": "https://random-prompt-card-3sst.vercel.app/$1",
+      "permanent": false
     }
-  ]
+  ],
+  "trailingSlash": false
 }
