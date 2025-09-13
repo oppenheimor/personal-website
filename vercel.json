@@ -11,10 +11,6 @@
     {
       "source": "/ai-prompt-card/:path*",
       "destination": "https://random-prompt-card-3sst.vercel.app/:path*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/"
     }
   ]
 }
