@@ -1,12 +1,16 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/ai-prompt-card(.*)",
-      "destination": "https://random-prompt-card-3sst.vercel.app$1"
+      "src": "/ai-prompt-card",
+      "dest": "https://random-prompt-card-3sst.vercel.app/"
     },
     {
-      "source": "/(.*)",
-      "destination": "/"
+      "src": "/ai-prompt-card/(.*)",
+      "dest": "https://random-prompt-card-3sst.vercel.app/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
     }
   ]
 }
