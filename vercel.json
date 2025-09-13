@@ -9,5 +9,16 @@
       "destination": "https://random-prompt-card-3sst.vercel.app/"
     }
   ],
+  "headers": [
+    {
+      "source": "/ai-prompt-card/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
+    }
+  ],
   "trailingSlash": false
 }
