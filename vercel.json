@@ -1,8 +1,16 @@
 {
   "rewrites": [
     {
+      "source": "/ai-prompt-card",
+      "destination": "https://random-prompt-card-3sst.vercel.app/"
+    },
+    {
       "source": "/ai-prompt-card/:path*",
       "destination": "https://random-prompt-card-3sst.vercel.app/:path*"
+    },
+    {
+      "source": "/agi-next-meeting-20260110",
+      "destination": "https://agi-next-20260110.vercel.app/"
     },
     {
       "source": "/agi-next-meeting-20260110/:path*",
