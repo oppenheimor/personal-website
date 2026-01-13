@@ -120,15 +120,11 @@ export default defineConfig({
           },
         ],
       },
-      // 排除外部 rewrite 路径，让 Service Worker 不拦截这些请求
-      exclude: [
-        /\/ai-prompt-card/,
-        /\/agi-next-meeting-20260110/,
-      ],
-      // 网络请求优先，不要使用缓存作为 fallback
       workbox: {
-        navigateFallback: null,
+        // 排除外部 rewrite 路径，让 Service Worker 不拦截这些请求
         navigateFallbackDenylist: [/^\/ai-prompt-card/, /^\/agi-next-meeting-20260110/],
+        // 网络请求优先，不要使用缓存作为 fallback
+        navigateFallback: null,
       },
     }),
 
