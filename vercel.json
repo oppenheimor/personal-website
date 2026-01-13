@@ -5,7 +5,7 @@
       "destination": "https://random-prompt-card-3sst.vercel.app/:path*"
     },
     {
-      "source": "/agi-next-20260110/:path*",
+      "source": "/agi-next-meeting-20260110/:path*",
       "destination": "https://agi-next-20260110.vercel.app/:path*"
     },
     {
@@ -24,7 +24,7 @@
       ]
     },
     {
-      "source": "/agi-next-20260110/(.*)",
+      "source": "/agi-next-meeting-20260110/(.*)",
       "headers": [
         {
           "key": "X-Frame-Options",
