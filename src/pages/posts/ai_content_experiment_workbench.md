@@ -16,6 +16,8 @@ author: 沈佳棋
 
 我看着那条自动生成的小红书笔记，第一反应不是“太棒了，可以规模化了”，而是有点不踏实。
 
+![Agent 先看省哪一步](/posts/ai-content-experiment-workbench/agent-save-step.png)
+
 它能发出去。
 
 然后呢？
