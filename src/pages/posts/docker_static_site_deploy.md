@@ -1,5 +1,5 @@
 ---
-title: 第一次用 Docker 镜像部署静态站
+title: Docker 镜像部署开源项目指南
 date: 2026-07-06T00:00:00.000+00:00
 lang: zh
 duration: 8min
