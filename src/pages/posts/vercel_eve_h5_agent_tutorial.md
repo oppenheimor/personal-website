@@ -135,6 +135,10 @@ export default defineTool({
 
 我还遇到一个容易误判的细节。批准已经完成，`action.result` 也返回成功，模型最后一句话却仍然说“等待人工审批”。工具事件证明执行成功，模型对状态的复述错了。界面、审计和业务状态机应读取结构化事件，不能解析助手文案来判断操作有没有发生。
 
+拒绝路径也要单独测。我用一个不存在的文件触发 `stage_release`，随后选择 `deny`。Eve 返回
+`TOOL_EXECUTION_DENIED` 和 `tool.result: not_run`，没有进入文件读取。内置 `ask_question` 还可能不给 options，
+H5 需要在 `allowFreeform` 或 `display: "text"` 时渲染输入框，并提交 `{ requestId, text }`。这条自由文本链路也用真实 DeepSeek 跑过了。
+
 ## Skill 只负责加载规则
 
 Skill 使用文件系统约定：
@@ -192,30 +196,54 @@ EVE_LAB_SANDBOX=justbash npm run dev
 
 just-bash 能提供虚拟文件系统和 shell 语义，`write_file`、`bash`、`read_file` 都跑通了，脚本输出为 `EVE_SANDBOX_OK`。它没有真实的 Node、git、包管理器和 VM 隔离，也不支持同等级网络策略。生产环境仍要单独验收 Vercel Sandbox、Docker 或 microsandbox。
 
+进程重启又暴露了一层边界。同一个 continuation token 能继续原对话并回复 `RESTART_OK`，之前写入 just-bash 的 `lab/hello.sh` 却已经消失。会话耐久和工作区耐久是两套问题，后者必须按 backend 验收。
+
 ## Next.js 页面保存什么
 
-脚手架用 `withEve()` 把 Eve route 挂到 Next.js 同源地址，页面通过 `useEveAgent()` 收发事件：
+脚手架用 `withEve()` 把 Eve route 挂到 Next.js 同源地址，页面通过 `useEveAgent()` 收发事件。
+下面的简化片段省略视觉组件，只保留恢复顺序和异常处理：
 
 ```tsx
 const STORAGE_KEY = "eve-lab-session-v1";
 
-const [saved] = useState(() => readSavedChat());
-const agent = useEveAgent({
-  initialEvents: saved.events ?? [],
-  initialSession: saved.session,
-  onFinish(snapshot) {
-    // cursor 负责继续远端 session，events 负责重建当前浏览器画面。
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ events: snapshot.events, session: snapshot.session }),
-    );
-  },
-});
+function AgentChat() {
+  const [saved, setSaved] = useState<SavedChat | null>(null);
+
+  useEffect(() => {
+    // 挂载后再读缓存，保证服务端与浏览器第一次渲染一致。
+    setSaved(readSavedChat());
+  }, []);
+
+  if (saved === null) return <BootScreen />;
+  return <AgentSession saved={saved} />;
+}
+
+function AgentSession({ saved }: { saved: SavedChat }) {
+  const [storageWarning, setStorageWarning] = useState(false);
+  const agent = useEveAgent({
+    initialEvents: saved.events ?? [],
+    initialSession: saved.session,
+    onFinish(snapshot) {
+      try {
+        // cursor 负责继续远端 session，events 负责重建当前浏览器画面。
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ events: snapshot.events, session: snapshot.session }),
+        );
+      } catch {
+        // 缓存超额不能让已经完成的服务端 turn 变成前端失败。
+        setStorageWarning(true);
+      }
+    },
+  });
+
+  return <AgentView agent={agent} storageWarning={storageWarning} />;
+}
 ```
 
 只保存 `SessionState` 无法恢复聊天画面，它只是远端 session 的 cursor。Demo 在一次真实工具对话后保存了 176 条 events；刷新页面，工具输入、结果和 DeepSeek 的最终回复都恢复了。
 
-localStorage 只适合单浏览器 Demo。多设备历史、审计检索和数据删除需要服务端 thread/event 存储。附件也可能迅速放大浏览器存储，生产页面应设置大小限制并把文件放到对象存储。
+localStorage 只适合单浏览器 Demo。多设备历史、审计检索和数据删除需要服务端 thread/event 存储。附件也可能迅速放大浏览器存储，生产页面应设置大小限制并把文件放到对象存储。Demo 在缓存失败时退化为只保存 session cursor，并显示可见警告；`onFinish` 不能继续抛错。
 
 开发测试还发现一个 Next.js 配置问题。通过 `127.0.0.1` 打开页面时，SSR HTML 正常，按钮却完全没反应。日志提示开发资源来源被拦截，DOM 也没有 React fiber。加入下面的配置并重启后，页面完成水合：
 
@@ -226,6 +254,7 @@ const nextConfig = {
 ```
 
 移动端用 390×844 viewport 复测，页面 `scrollWidth` 和 `innerWidth` 都是 390，composer 左右各保留 12px，没有横向溢出。
+侧栏在这个宽度下会隐藏，所以 New session 入口还要放进移动端 header，否则卡住的 waiting session 没有 reset 入口。
 
 ## 用 eval 检查行为
 
